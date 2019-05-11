@@ -1,0 +1,66 @@
+Create table department(
+	dept_name varchar(20),
+	building varchar(10),
+	budget numeric(10,2),
+	primary key(dept_name));
+
+Create table student(
+	ID varchar(10),
+	name varchar(10),
+	dept_name varchar(20),
+	tot_cred int,
+	primary key(ID),
+	foreign key (dept_name) references department);
+
+insert into student values('12345','sahil','CSE',9);
+insert into student values('12346','garvit','CSE',8);
+insert into student values('12347','mohit','ECE',7);
+insert into student values('12348','vishnu','IT',9);
+insert into student values('12349','arun','IT',6);
+insert into student values('12350','vignesh','ECE',12);
+
+insert into department values('CSE','AB-5',100000.00);
+insert into department values('ECE','NLH',20000.00);
+insert into department values('IT','AB-5',10000.00);
+
+select * from student;
+select name from student;
+select distinct name from student;
+select * from student where dept_name = 'CSE';
+select * from student where name like '%it%';
+select * from student where dept_name = 'ECE' and tot_cred>7;
+
+alter table student add DOB date;
+alter table student drop column DOB;
+delete from student where tot_cred<8;
+update student set tot_cred = tot_cred+20;
+
+EXERCISES
+select name,dept_name from student;
+select * from instructor where dept_name = 'Comp. Sci.';
+select title from course where dept_name = 'Comp. Sci.' and credits = 3;
+select course.course_id,title from course,takes where ID = '12345' and takes.course_id = course.course_id;
+select * from instructor where salary between 40000 and 90000; 
+
+update advisor set i_id = 10101 where s_id between 100 and 200;
+update instructor set dept_name = 'Comp. Sci.' where dept_name = 'IT';
+update instructor set salary = 105/100*salary;
+
+delete from department where dept_name = 'IT';
+delete from prereq where course_id = '101';
+delete from course where course_id not in (select course_id from section);
+
+alter table student add DOB date;
+alter table student modify (dept_name varchar(20)); 
+alter table student drop column DOB;
+
+select distinct instructor.ID from instructor,teaches where instructor.ID not in (select ID from teaches);
+select student.name,course.title,takes.year from student,course,takes,section where student.ID = takes.ID and takes.course_id = course.course_id and course.course_id = section.course_id and section.room_number = 303;
+
+select student.name,takes.course_id,course.title c_name from student,course,takes where takes.year = 2015 and student.ID = takes.ID and takes.course_id = course.course_id;
+select distinct T.name from instructor T,instructor S where T.salary > S.salary and S.dept_name = 'Comp. Sci.'; 
+
+select name from instructor where dept_name like '%ch%';
+
+select T.course_id,T.title,S.course_ID,S.title from course T,course S,prereq where T.course_id = prereq.course_id and S.course_id = prereq.prereq_id
+order by T.course_id asc,T.title desc,S.title asc;
